@@ -288,136 +288,117 @@
 #     st.write("Model berhasil disimpan!")
 
 # 11
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-import pickle
-import os
-import streamlit as st
+# import pandas as pd
+# import numpy as np
+# import seaborn as sns
+# import matplotlib.pyplot as plt
+# from wordcloud import WordCloud
+# from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import mean_absolute_error, mean_squared_error
+# import pickle
+# import os
+# import streamlit as st
 
-# Judul Aplikasi
-st.title("Analisis dan Prediksi Harga Mobil")
-st.markdown("""
-Aplikasi ini memvisualisasikan data mobil dan melakukan prediksi harga berdasarkan fitur-fitur tertentu.
-""")
+# st.title("Analisis dan Prediksi Harga Mobil")
+# st.markdown("""
+# Aplikasi ini memvisualisasikan data mobil dan melakukan prediksi harga berdasarkan fitur-fitur tertentu.
+# """)
 
-# Memeriksa keberadaan file dataset
-if not os.path.exists('CarPrice_Assignment.csv'):
-    st.error("File **'CarPrice_Assignment.csv'** tidak ditemukan! Pastikan file berada di direktori yang sesuai.")
-else:
-    # Membaca dataset
-    df_mobil = pd.read_csv('CarPrice_Assignment.csv')
-    st.sidebar.header("Info Dataset")
-    st.sidebar.write(f"Jumlah Baris: {df_mobil.shape[0]}")
-    st.sidebar.write(f"Jumlah Kolom: {df_mobil.shape[1]}")
+# if not os.path.exists('CarPrice_Assignment.csv'):
+#     st.error("File **'CarPrice_Assignment.csv'** tidak ditemukan! Pastikan file berada di direktori yang sesuai.")
+# else:
+#     df_mobil = pd.read_csv('CarPrice_Assignment.csv')
+#     st.sidebar.header("Info Dataset")
+#     st.sidebar.write(f"Jumlah Baris: {df_mobil.shape[0]}")
+#     st.sidebar.write(f"Jumlah Kolom: {df_mobil.shape[1]}")
     
-    # 1. Deskripsi Data
-    st.subheader("1. Deskripsi Data")
-    with st.expander("Statistik Deskriptif"):
-        st.write(df_mobil.describe())
+#     st.subheader("1. Deskripsi Data")
+#     with st.expander("Statistik Deskriptif"):
+#         st.write(df_mobil.describe())
 
-    with st.expander("Tipe Data Kolom"):
-        st.write(df_mobil.dtypes)
+#     with st.expander("Tipe Data Kolom"):
+#         st.write(df_mobil.dtypes)
 
-    # 2. Visualisasi Data
-    st.subheader("2. Visualisasi Data")
+#     st.subheader("2. Visualisasi Data")
     
-    # Visualisasi Distribusi Harga Mobil
-    st.markdown("### Distribusi Harga Mobil")
-    fig, ax = plt.subplots(figsize=(8, 4))
-    sns.histplot(df_mobil['price'], kde=True, color='green', ax=ax)
-    ax.set_title("Distribusi Harga Mobil", fontsize=14)
-    st.pyplot(fig)
+#     st.markdown("### Distribusi Harga Mobil")
+#     fig, ax = plt.subplots(figsize=(8, 4))
+#     sns.histplot(df_mobil['price'], kde=True, color='green', ax=ax)
+#     ax.set_title("Distribusi Harga Mobil", fontsize=14)
+#     st.pyplot(fig)
     
-    # Visualisasi Distribusi Jumlah Mobil Berdasarkan Nama
-    st.markdown("### Distribusi Jumlah Mobil Berdasarkan CarName")
-    top_10_cars = df_mobil['CarName'].value_counts().head(10)
-    fig, ax = plt.subplots(figsize=(8, 5))
-    top_10_cars.plot(kind="bar", color="skyblue", ax=ax)
-    ax.set_title("10 Nama Mobil Terbanyak", fontsize=14)
-    ax.set_xlabel("CarName")
-    ax.set_ylabel("Jumlah")
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
+#     st.markdown("### Distribusi Jumlah Mobil Berdasarkan CarName")
+#     top_10_cars = df_mobil['CarName'].value_counts().head(10)
+#     fig, ax = plt.subplots(figsize=(8, 5))
+#     top_10_cars.plot(kind="bar", color="skyblue", ax=ax)
+#     ax.set_title("10 Nama Mobil Terbanyak", fontsize=14)
+#     ax.set_xlabel("CarName")
+#     ax.set_ylabel("Jumlah")
+#     plt.xticks(rotation=45)
+#     st.pyplot(fig)
 
-    # Visualisasi Word Cloud dari Nama Mobil
-    st.markdown("### Word Cloud Nama Mobil")
-    car_names = " ".join(df_mobil['CarName'])
-    wordcloud = WordCloud(
-        width=800, height=400, background_color='white', colormap='viridis'
-    ).generate(car_names)
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.imshow(wordcloud, interpolation='bilinear')
-    ax.axis('off')
-    st.pyplot(fig)
+#     st.markdown("### Word Cloud Nama Mobil")
+#     car_names = " ".join(df_mobil['CarName'])
+#     wordcloud = WordCloud(
+#         width=800, height=400, background_color='white', colormap='viridis'
+#     ).generate(car_names)
+#     fig, ax = plt.subplots(figsize=(10, 6))
+#     ax.imshow(wordcloud, interpolation='bilinear')
+#     ax.axis('off')
+#     st.pyplot(fig)
     
-    # Scatter Plot Harga Mobil vs Highwaympg
-    st.markdown("### Scatter Plot: Harga Mobil vs Highwaympg")
-    fig, ax = plt.subplots()
-    sns.scatterplot(x=df_mobil['highwaympg'], y=df_mobil['price'], ax=ax)
-    ax.set_title("Harga Mobil vs Highwaympg", fontsize=14)
-    ax.set_xlabel("Highway MPG")
-    ax.set_ylabel("Price")
-    st.pyplot(fig)
+#     st.markdown("### Scatter Plot: Harga Mobil vs Highwaympg")
+#     fig, ax = plt.subplots()
+#     sns.scatterplot(x=df_mobil['highwaympg'], y=df_mobil['price'], ax=ax)
+#     ax.set_title("Harga Mobil vs Highwaympg", fontsize=14)
+#     ax.set_xlabel("Highway MPG")
+#     ax.set_ylabel("Price")
+#     st.pyplot(fig)
 
-    # 3. Model Prediksi
-    st.subheader("3. Prediksi Harga Mobil")
+#     st.subheader("3. Prediksi Harga Mobil")
     
-    # Persiapan data untuk model
-    x = df_mobil[['highwaympg', 'curbweight', 'horsepower']]
-    y = df_mobil['price']
+#     x = df_mobil[['highwaympg', 'curbweight', 'horsepower']]
+#     y = df_mobil['price']
 
-    # Membagi data
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+#     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    # Membuat model regresi linear
-    model_regresi = LinearRegression()
-    model_regresi.fit(x_train, y_train)
+#     model_regresi = LinearRegression()
+#     model_regresi.fit(x_train, y_train)
 
-    # Prediksi data uji
-    model_regresi_pred = model_regresi.predict(x_test)
+#     model_regresi_pred = model_regresi.predict(x_test)
 
-    # Visualisasi Prediksi vs Aktual dengan Select Slider
-    st.markdown("### Prediksi vs Harga Sebenarnya")
-    st.markdown("Pilih atribut untuk divisualisasikan:")
-    selected_feature = st.select_slider(
-        "Pilih atribut:",
-        options=["highwaympg", "curbweight", "horsepower"],
-        value="highwaympg"
-    )
+#     st.markdown("### Prediksi vs Harga Sebenarnya")
+#     st.markdown("Pilih atribut untuk divisualisasikan:")
+#     selected_feature = st.select_slider(
+#         "Pilih atribut:",
+#         options=["highwaympg", "curbweight", "horsepower"],
+#         value="highwaympg"
+#     )
 
-    # Visualisasi dinamis berdasarkan fitur yang dipilih
-    st.write(f"Menampilkan grafik untuk atribut: **{selected_feature}**")
-    fig, ax = plt.subplots()
-    ax.scatter(x_test[selected_feature], y_test, label="Harga Sebenarnya", color="blue", alpha=0.7)
-    ax.scatter(x_test[selected_feature], model_regresi_pred, label="Harga Prediksi", color="red", alpha=0.7)
-    ax.set_title(f"Harga Sebenarnya vs Prediksi ({selected_feature.capitalize()})", fontsize=14)
-    ax.set_xlabel(selected_feature.capitalize())
-    ax.set_ylabel("Price")
-    ax.legend()
-    st.pyplot(fig)
+#     st.write(f"Menampilkan grafik untuk atribut: **{selected_feature}**")
+#     fig, ax = plt.subplots()
+#     ax.scatter(x_test[selected_feature], y_test, label="Harga Sebenarnya", color="blue", alpha=0.7)
+#     ax.scatter(x_test[selected_feature], model_regresi_pred, label="Harga Prediksi", color="red", alpha=0.7)
+#     ax.set_title(f"Harga Sebenarnya vs Prediksi ({selected_feature.capitalize()})", fontsize=14)
+#     ax.set_xlabel(selected_feature.capitalize())
+#     ax.set_ylabel("Price")
+#     ax.legend()
+#     st.pyplot(fig)
 
-    # Prediksi harga untuk input baru
-    st.markdown("### Prediksi untuk Input Baru")
-    X_new = np.array([[32, 2338, 75]])
-    prediksi_harga = model_regresi.predict(X_new)
-    st.success(f"Harga Prediksi untuk Input Baru: **${int(prediksi_harga[0]):,}**")
+#     st.markdown("### Prediksi untuk Input Baru")
+#     X_new = np.array([[32, 2338, 75]])
+#     prediksi_harga = model_regresi.predict(X_new)
+#     st.success(f"Harga Prediksi untuk Input Baru: **${int(prediksi_harga[0]):,}**")
 
-    # Menampilkan Error
-    mae = mean_absolute_error(y_test, model_regresi_pred)
-    mse = mean_squared_error(y_test, model_regresi_pred)
-    rmse = np.sqrt(mse)
-    st.markdown("### Evaluasi Model")
-    st.write(f"- **Mean Absolute Error (MAE):** {mae:.2f}")
-    st.write(f"- **Mean Squared Error (MSE):** {mse:.2f}")
-    st.write(f"- **Root Mean Squared Error (RMSE):** {rmse:.2f}")
+#     mae = mean_absolute_error(y_test, model_regresi_pred)
+#     mse = mean_squared_error(y_test, model_regresi_pred)
+#     rmse = np.sqrt(mse)
+#     st.markdown("### Evaluasi Model")
+#     st.write(f"- **Mean Absolute Error (MAE):** {mae:.2f}")
+#     st.write(f"- **Mean Squared Error (MSE):** {mse:.2f}")
+#     st.write(f"- **Root Mean Squared Error (RMSE):** {rmse:.2f}")
 
-    # Menyimpan model
-    filename = 'model_prediksi_harga_mobil.sav'
-    pickle.dump(model_regresi, open(filename, 'wb'))
-    st.success("Model berhasil disimpan sebagai 'model_prediksi_harga_mobil.sav'!")
+#     filename = 'model_prediksi_harga_mobil.sav'
+#     pickle.dump(model_regresi, open(filename, 'wb'))
+#     st.success("Model berhasil disimpan sebagai 'model_prediksi_harga_mobil.sav'!")
